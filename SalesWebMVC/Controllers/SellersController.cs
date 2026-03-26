@@ -31,11 +31,6 @@ namespace SalesWebMVC.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Seller seller)
         {
-            {
-                var departments = _departmentService.FindAll();
-                var viewModel = new SellerFormViewModel { Seller = seller, Departments = departments };
-                return View(viewModel);
-            }
             _sellerService.Insert(seller);
             return RedirectToAction(nameof(Index));
         }
@@ -43,7 +38,7 @@ namespace SalesWebMVC.Controllers
         {
             if (id == null)
             {
-                return RedirectToAction(nameof(Error), new { message = "Id not provided" });
+                return RedirectToAction(nameof(Error), new { message = "Id not Provided" });
             }
             var obj = _sellerService.FindById(id.Value);
             if (obj == null)
@@ -91,13 +86,7 @@ namespace SalesWebMVC.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, Seller seller)
-        {
-           if (!ModelState.IsValid)
-            {
-                var departments = _departmentService.FindAll();
-                var viewModel = new SellerFormViewModel { Seller = seller, Departments = departments };
-                return View(viewModel);
-            }
+        {            
             if (id != seller.Id)
             {
                 return RedirectToAction(nameof(Error), new { message = "Id mismatch" });
@@ -112,11 +101,16 @@ namespace SalesWebMVC.Controllers
                 return RedirectToAction(nameof(Error), new { message = e.Message });
             }
         }
+
         public IActionResult Error(string message)
         {
-            var viewModel = new ErrorViewModel { Message = message, 
-                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier };
+            var viewModel = new ErrorViewModel
+            {
+                Message = message,
+                RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier
+            };
             return View(viewModel);
         }
+
     }
 }
