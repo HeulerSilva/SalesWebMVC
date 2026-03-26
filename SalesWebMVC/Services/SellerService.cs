@@ -35,7 +35,7 @@ namespace SalesWebMVC.Services
             }
             catch (DbUpdateException e)
             { 
-                throw new IntegrityException(e.Message);
+                throw new IntegrityException("Can´t delete seller because he/she has sales");
             }
         }
         public async Task UpdateAsync(Seller obj)
